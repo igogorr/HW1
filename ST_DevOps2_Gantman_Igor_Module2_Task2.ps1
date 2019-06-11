@@ -21,9 +21,10 @@ Write-Host("Sum = $sum")
 #6. Вывести список из 6 процессов занимающих дольше всего процессор.
 Get-Process|where {$_.CPU-gt100} |Sort-Object CPU | select -first 6| select CPU, VM, Name 
 #7. Вывести список названий и занятую виртуальную память (в Mb) каждого процесса, разделённые знаком тире,
-Get-Process|ForEach-Object {if($_.VM/1Mb-gt100) {Write-Host-ForegroundColor red $_.name, ("{0:N2}"-f $($_.vm/1Mb)) -Separator "-" } else {write-host-ForegroundColor green $_.Name, ("{0:N2}"-f $($_.VM/1Mb))-Separator "-"}}
 #при этом если процесс занимает более 100Mb – выводить информацию красным цветом, иначе зелёным.
-Get-Process|Where-Object Name -Like*-*| select VM, Name |Write-Host-BackgroundColor Red
+Get-Process|ForEach-Object {if($_.VM/1Mb-gt100) {Write-Host-ForegroundColor red $_.name, ("{0:N2}"-f $($_.vm/1Mb)) `
+-Separator "-" } else {write-host-ForegroundColor green $_.Name, ("{0:N2}"-f $($_.VM/1Mb))-Separator "-"}}
+
 #8. Подсчитать размер занимаемый файлами в папке C:\windows (и во всех подпапках) за исключением файлов *.tmp
 Get-ChildItem C:\Windows\*-recurse -Exclude *.tmp| measure -Property Length -Sum;
 #9. Сохранить в CSV-файле информацию о записях одной ветви реестра HKLM:\SOFTWARE\Microsoft.
